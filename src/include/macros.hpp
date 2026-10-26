@@ -7,9 +7,12 @@
 #include <string_view>
 #include <sstream>
 #include <fstream>
+#include <unordered_map>
 #include <glm/glm.hpp>
 #include "glad.h"
 #include <GLFW/glfw3.h>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #define PI 3.14159265358979323846f
 

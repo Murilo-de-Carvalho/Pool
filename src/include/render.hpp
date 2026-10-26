@@ -68,13 +68,17 @@ private:
     vec3 pos;
     std::vector<Mesh> meshes;
     Shader shader;
+    quat rotation;
 
 public:
 
+    Model(const std::string& model_path);
     Model(std::vector<Mesh> meshes, Shader shader);
     ~Model();
 
-    void render() const;
+    void render(mat4 MVP) const;
     void set_pos(vec3 new_pos);
+    void set_rotation(quat new_rotation);
+    void update_rotation(quat delta_rotation);
 
 };
