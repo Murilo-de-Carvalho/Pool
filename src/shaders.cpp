@@ -100,6 +100,4 @@ void Shader::impromptu(const std::string& vert_src, const std::string& frag_src)
 
 }
 
-Shader::~Shader() {
-    glDeleteProgram(id);
-}
+Shader::~Shader() {}
