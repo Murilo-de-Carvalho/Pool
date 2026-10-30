@@ -1,0 +1,177 @@
+# Blender 5.2.2 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl ball1
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball1_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball1_normal.png
+
+newmtl ball2
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball2_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball2_normal.png
+
+newmtl ball3
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball3_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball3_normal.png
+
+newmtl ball4
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball4_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball4_normal.png
+
+newmtl ball5
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball5_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball5_normal.png
+
+newmtl ball6
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball6_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball6_normal.png
+
+newmtl ball7
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball7_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball7_normal.png
+
+newmtl ball8
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball8_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball8_normal.png
+
+newmtl ball9
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball9_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball9_normal.png
+
+newmtl ball10
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball10_baseColor.jpeg
+
+newmtl ball13
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball13_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball13_normal.png
+
+newmtl ball14
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball14_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball14_normal.png
+
+newmtl ball15
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball15_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball15_normal.png
+
+newmtl ball19
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball19_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball19_normal.png
+
+newmtl ball20
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball20_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball20_normal.png
+
+newmtl ball21
+Ns 250.000000
+Ka 0.400000 0.400000 0.400000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd textures/ball21_baseColor.jpeg
+# map_Bump -bm 1.000000 textures/ball21_normal.png

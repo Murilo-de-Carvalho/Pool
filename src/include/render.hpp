@@ -5,8 +5,8 @@
 
 enum __Vertex_Attributes {
     POSITION = 0,
-    UV = 1,
-    NORMAL = 2,
+    NORMAL = 1,
+    UV = 2,
     COLOR = 3
 };
 
@@ -22,27 +22,34 @@ class Material {
 
 private:
 
-    Color Ka; // Ambient lighting
-    Color Kd; // Diffuse lighting
-    Color Ks; // Specular lighting
-    float Ns; // Brightness
+    vec3 Ka; // Ambient lighting
+    vec3 Kd; // Diffuse lighting
+    vec3 Ks; // Specular lighting
+    float Ns; // Brightness 0-100
     float Ni; // Refraction coefficient
     float d;  // Opacity
     unsigned int texture_id;
 
+    void get_texture(const std::string& texture_path);
+
 public:
 
     Material();
-
     Material(
-        Color Ka,
-        Color Kd,
-        Color Ks,
+        vec3 Ka,
+        vec3 Kd,
+        vec3 Ks,
         float Ns, 
         float Ni,
         float d,
         const std::string& texture_path
     );
+
+    ~Material();
+
+    inline unsigned int get_texture_id() const {
+        return texture_id;
+    }
 
 };
 
@@ -55,9 +62,16 @@ private:
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
+    void setup_mesh();
+
 public:
 
     Mesh(Material material, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    ~Mesh();
+
+    inline unsigned int get_id() const {
+        return id;
+    }
 
 };
 
@@ -70,9 +84,34 @@ private:
     Shader shader;
     quat rotation;
 
+    std::vector<std::string> split_line(std::string line, std::string delimiter);
+
+    void get_face_corner(
+        const std::string& face_description,
+        const std::vector<vec3>& v,
+        const std::vector<vec3>& vn,
+        const std::vector<vec2>& vt,
+        std::vector<Vertex>& vertices
+    );
+
+    void read_face(
+        const std::vector<std::string>& tokens,
+        const std::vector<vec3>& v,
+        const std::vector<vec3>& vn,
+        const std::vector<vec2>& vt,
+        std::vector<Vertex>& vertices
+    );
+
+    vec2 read_vec2(const std::vector<std::string>& tokens) const;
+    vec3 read_vec3(const std::vector<std::string>& tokens) const;
+
+    /* std::unordered_map<std::string, Material> parse_mtl(const std::string& file_path); */
+
+    std::vector<Mesh> parse_obj(const std::filesystem::path& model_dir_name);
+
 public:
 
-    Model(const std::string& model_path);
+    Model(const std::filesystem::path& model_dir_name);
     Model(std::vector<Mesh> meshes, Shader shader);
     ~Model();
 

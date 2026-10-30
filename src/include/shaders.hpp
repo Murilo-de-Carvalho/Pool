@@ -19,9 +19,9 @@ public:
     ~Shader();
 
     void impromptu(const std::string& vert_src, const std::string& frag_src);
-    void set_vec3_uniform(const std::string& name, vec3 uniform) const;
+/*     void set_vec3_uniform(const std::string& name, vec3 uniform) const;
     void set_float_uniform(const std::string& name, float uniform) const;
-    void set_color_uniform(const std::string& name, Color uniform) const;
+    void set_color_uniform(const std::string& name, Color uniform) const; */
 
     inline unsigned int get_id() const {
         return id;

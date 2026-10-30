@@ -8,9 +8,11 @@
 #include <sstream>
 #include <fstream>
 #include <unordered_map>
+#include <filesystem>
 #include <glm/glm.hpp>
 #include "glad.h"
 #include <GLFW/glfw3.h>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
