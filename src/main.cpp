@@ -12,9 +12,11 @@ int main() {
 
     set_background_color(FULL_BLACK);
 
-    Model model = Model("balls");
+    Model balls = Model("balls");
+    Model table = Model("table");
+    Model cue = Model("cue");
 
-    while (!window_should_close(app)) {
+    /* while (!window_should_close(app)) {
 
         glfwPollEvents();
 
@@ -22,7 +24,7 @@ int main() {
 
         glfwSwapBuffers(app.window);
 
-    }
+    } */
 
     return 0;
 }

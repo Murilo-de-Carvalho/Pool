@@ -280,10 +280,11 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
 
     mesh_count = std::stoul(tokens[2]);
 
-    std::vector<__Mesh_Description> mesh_descriptions;
-    mesh_descriptions.reserve(mesh_count);
-
+    std::vector<__Mesh_Description> mesh_descriptions(mesh_count);
+    //mesh_descriptions.reserve(mesh_count);
+    
     std::getline(file, line); // Skips "o name"
+
     for (size_t i = 0; i < mesh_count; i++) {
 
         mesh_descriptions[i].v = 0;
@@ -335,7 +336,7 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
         // Gets mat_name
         std::getline(file, line);
         tokens = split_line(line, " ");
-        printf("%s\n", line.c_str());
+        //printf("%s\n", line.c_str());
         //mesh_descriptions[i].mat_name = "aaa";// tokens[1];
 
         // f
@@ -355,34 +356,99 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
     file.close();
 
 
-    for (size_t i = 0; i < mesh_count; i++) {
+    // TODO: REMOVE
+    /* for (size_t i = 0; i < mesh_count; i++) {
         printf("mesh %zu v count: %zu\n", i, mesh_descriptions[i].v);
         printf("mesh %zu vn count: %zu\n", i, mesh_descriptions[i].vn);
         printf("mesh %zu vt count: %zu\n", i, mesh_descriptions[i].vt);
         printf("mesh %zu f count: %zu\n\n", i, mesh_descriptions[i].f);
-    }
-    
+    } */
 
+    /* std::vector<Mesh> m;
+    return m; */
 
-    /* file.open(obj_file);
+    file.open(obj_file);
 
     for (byte i = 0; i < 4; i++) {
         // Removes "# Blender 5.2.2 LTS", "# www.blender.org", "mtllib name.mtl" and "# mesh_count"
         std::getline(file, line);
     }
 
-    std::getline(file, line);
+    std::vector<Mesh> meshes;
+    meshes.reserve(mesh_count);
 
     for (size_t i = 0; i < mesh_count; i++) {
 
+        std::vector<vec3> v(mesh_descriptions[i].v);
+        std::vector<vec3> vn(mesh_descriptions[i].vn);
+        std::vector<vec2> vt(mesh_descriptions[i].vt);
+        std::vector<Vertex> vertices;
+        std::vector<unsigned int> indices;
+        //vertices.reserve(mesh_descriptions[i].v);
+        Material mat;
 
+        std::getline(file, line); // Skips "o name"
+
+        for (size_t j = 0; j < mesh_descriptions[i].v; j++) {
+            std::getline(file, line);
+            tokens = split_line(line, " ");
+            v[j] = read_vec3(tokens);
+        }
+
+        for (size_t j = 0; j < mesh_descriptions[i].vn; j++) {
+            std::getline(file, line);
+            tokens = split_line(line, " ");
+            vn[j] = read_vec3(tokens);
+        }
+
+        for (size_t j = 0; j < mesh_descriptions[i].vt; j++) {
+            std::getline(file, line);
+            tokens = split_line(line, " ");
+            vt[j] = read_vec2(tokens);
+        }
+
+        std::getline(file, line); // Skips "s 1"
+        // Getting material
+        std::getline(file, line);
+        //tokens = split_line(line, " ");
+        //mat = materials[tokens[1]];
+
+        for (size_t j = 0; j < mesh_descriptions[i].f; j++) {
+            std::getline(file, line);
+            tokens = split_line(line, " ");
+            read_face(tokens, v, vn, vt, vertices);
+        }
+
+        indices.resize(vertices.size());
+        std::iota(indices.begin(), indices.end(), 0);
+        meshes.push_back(Mesh(mat, vertices, indices));
+
+        // TODO: REMOVE
+        /* printf("size: %zu\n", vertices.size());
+        for (Vertex v : vertices) {
+            printf("pos: <%.2f, %.2f, %.2f>\n", v.pos.x, v.pos.y, v.pos.z);
+            printf("normal: <%.2f, %.2f, %.2f>\n", v.normal.x, v.normal.y, v.normal.z);
+            printf("uv: <%.2f, %.2f>\n\n", v.uv.x, v.uv.y);
+        } */
 
     }
-    file.close(); */
+    file.close();
 
-    std::vector<Mesh> m;
-    return m;
+    // TODO: REMOVE
+    /* printf("size: %zu\n", meshes.size());
+    for (Mesh m : meshes) {
+        printf("%p\n", (void*)&m);
+    } */
 
+    // TODO: REMOVE
+    /* for (Vertex v : meshes[0].vertices) {
+        printf("pos: <%.2f, %.2f, %.2f>\n", v.pos.x, v.pos.y, v.pos.z);
+        printf("normal: <%.2f, %.2f, %.2f>\n", v.normal.x, v.normal.y, v.normal.z);
+        printf("uv: <%.2f, %.2f>\n\n", v.uv.x, v.uv.y);
+    } */
+    
+
+    return meshes;
 
     /* while (std::getline(file, line)) {
 
@@ -451,7 +517,7 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
 }
 
 Model::Model(const std::filesystem::path& model_dir_name) {
-    parse_obj(model_dir_name);
+    this->meshes = parse_obj(model_dir_name);
 }
 
 Model::Model(std::vector<Mesh> /* meshes */, Shader /* shader */) {

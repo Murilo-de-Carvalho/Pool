@@ -1,4 +1,4 @@
-# Blender 5.2.2 LTS MTL File: 'snooker_table_5.blend'
+# Blender 5.2.3 LTS MTL File: 'None'
 # www.blender.org
 
 newmtl Baize
@@ -10,8 +10,6 @@ d 1.000000
 illum 2
 map_Kd textures/snooker_table_Baize_BaseColor.png
 map_Ns textures/snooker_table_Baize_Roughness.png
-# map_refl textures/snooker_table_Baize_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_Baize_Normal.png
 
 newmtl Lamp
 Ka 1.000000 1.000000 1.000000
@@ -22,8 +20,6 @@ d 1.000000
 illum 2
 map_Kd textures/lamp_BaseColor.png
 map_Ns textures/lamp_Roughness.png
-# map_refl textures/lamp_Metallic.png
-# map_Bump -bm 1.000000 textures/lamp_Normal.png
 
 newmtl Leg_holders
 Ka 1.000000 1.000000 1.000000
@@ -34,8 +30,6 @@ d 1.000000
 illum 2
 map_Kd textures/snooker_table_Leg_holders_BaseColor.png
 map_Ns textures/snooker_table_Leg_holders_Roughness.png
-# map_refl textures/snooker_table_Leg_holders_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_Leg_holders_Normal.png
 
 newmtl Legs
 Ka 1.000000 1.000000 1.000000
@@ -46,8 +40,16 @@ d 1.000000
 illum 2
 map_Kd textures/snooker_table_Legs_BaseColor.png
 map_Ns textures/snooker_table_Legs_Roughness.png
-# map_refl textures/snooker_table_Legs_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_Legs_Normal.png
+
+newmtl Material.001
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
 
 newmtl Pin
 Ka 1.000000 1.000000 1.000000
@@ -58,13 +60,9 @@ d 1.000000
 illum 2
 map_Kd textures/snooker_table_Pin_BaseColor.png
 map_Ns textures/snooker_table_Pin_Roughness.png
-# map_refl texturessnooker_table_Pin_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_Pin_Normal.png
 
 newmtl Pot_corner
-# Ns 360.000000
 Ka 1.000000 1.000000 1.000000
-# Kd 0.800000 0.800000 0.800000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.200000
@@ -72,22 +70,16 @@ d 1.000000
 illum 2
 map_Kd textures/snooker_table_Pot_corner_BaseColor.png
 map_Ns textures/snooker_table_Pot_corner_Roughness.png
-# map_refl textures/snooker_table_Pot_corner_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_Pot_corner_Normal.png
 
 newmtl Pot_middle
-# Ns 360.000000
 Ka 1.000000 1.000000 1.000000
-# Kd 0.800000 0.800000 0.800000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.200000
 d 1.010000
-illum 2
+illum 9
 map_Kd textures/snooker_table_Pot_middle_BaseColor.png
 map_Ns textures/snooker_table_Pot_middle_Roughness.png
-# map_refl textures/snooker_table_Pot_middle_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_Pot_middle_Normal.png
 
 newmtl cushion
 Ka 1.000000 1.000000 1.000000
@@ -95,8 +87,6 @@ Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.010000
 d 1.010000
-illum 2
+illum 9
 map_Kd textures/snooker_table_cushion_BaseColor.png
 map_Ns textures/snooker_table_cushion_Roughness.png
-# map_refl textures/snooker_table_cushion_Metallic.png
-# map_Bump -bm 1.000000 textures/snooker_table_cushion_Normal.png

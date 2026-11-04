@@ -59,12 +59,13 @@ private:
 
     unsigned int id;
     Material material;
-    std::vector<Vertex> vertices;
+    //std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
     void setup_mesh();
 
 public:
+    std::vector<Vertex> vertices;
 
     Mesh(Material material, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     ~Mesh();

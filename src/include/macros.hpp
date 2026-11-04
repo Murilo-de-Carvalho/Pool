@@ -12,6 +12,7 @@
 #include <glm/glm.hpp>
 #include "glad.h"
 #include <GLFW/glfw3.h>
+#include <bits/stdc++.h>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
