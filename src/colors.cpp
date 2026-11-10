@@ -36,5 +36,5 @@ void set_background_color(Color color) {
 }
 
 void clear_background() {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

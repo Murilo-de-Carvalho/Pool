@@ -14,6 +14,7 @@
 #include <GLFW/glfw3.h>
 #include <bits/stdc++.h>
 #define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 

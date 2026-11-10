@@ -8,7 +8,7 @@
 //  Material
 // ============================================================
 
-void Material::get_texture(const std::string& texture_path) {
+void Material::get_maps(const std::string& Kd_map_path, const std::string& Ns_map_path) {
 
     int width;
     int height;
@@ -21,13 +21,36 @@ void Material::get_texture(const std::string& texture_path) {
     // OpenGL considers y=0 at the bottom while images understand y=0 at the top
     // That's why we're flipping vertically
     stbi_set_flip_vertically_on_load(true);
-    buffer = stbi_load(texture_path.c_str(), &width, &height, &BPP, 4);
+    buffer = stbi_load(Kd_map_path.c_str(), &width, &height, &BPP, 4);
 
     if (!buffer)
         ERROR("Failed to load texture")
 
-    glGenTextures(1, &texture_id);
-    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glGenTextures(1, &Kd_map_id);
+    glBindTexture(GL_TEXTURE_2D, Kd_map_id);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    if (buffer)
+        stbi_image_free(buffer);
+
+
+
+    stbi_set_flip_vertically_on_load(true);
+    buffer = stbi_load(Ns_map_path.c_str(), &width, &height, &BPP, 4);
+
+    if (!buffer)
+        ERROR("Failed to load texture")
+
+    glGenTextures(1, &Ns_map_id);
+    glBindTexture(GL_TEXTURE_2D, Ns_map_id);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -44,35 +67,32 @@ void Material::get_texture(const std::string& texture_path) {
 }
 
 Material::Material() {
-    Ka = Kd = Ks = {0.0f, 0.0f, 0.0f};
-    Ns = 0.0f;
+    Ka = Ks = {0.0f, 0.0f, 0.0f};
     Ni = 0.0f;
     d = 0.0f;
-    texture_id = 0;
+    Kd_map_id = 0;
+    Ns_map_id = 0;
 }
 
 Material::Material(
     vec3 Ka,
-    vec3 Kd,
     vec3 Ks,
-    float Ns, 
     float Ni,
     float d,
-    const std::string& texture_path
+    const std::string& Kd_map_path,
+    const std::string& Ns_map_path
 ) {
 
     this->Ka = Ka;
-    this->Kd = Kd;
     this->Ks = Ks;
 
-    this->Ns = Ns;
     this->Ni = Ni;
 
     if (d > 1.0f) d = 1.0f;
     else if (d < 0.0f) d = 0.0f;
     this->d = d;
 
-    get_texture(texture_path);
+    get_maps(Kd_map_path, Ns_map_path);
 
 }
 
@@ -233,13 +253,86 @@ vec3 Model::read_vec3(const std::vector<std::string>& tokens) const {
 
 
 
-/* std::unordered_map<std::string, Material> Model::parse_mtl(const std::string& file_path) {
+std::unordered_map<std::string, Material> Model::parse_mtl(const std::filesystem::path& file_path) {
 
-} */
+    std::filesystem::path this_dir = file_path.parent_path(); // assets/model_dir_name
+    std::unordered_map<std::string, Material> materials;
+
+    std::vector<std::string> tokens;
+    size_t material_count = 0;
+
+    std::string line;
+    std::ifstream file;
+
+    file.open(file_path);
+
+    for (byte i = 0; i < 2; i++) {
+        // Removes "# Blender 5.2.2 LTS" and "# www.blender.org"
+        std::getline(file, line);
+    }
+
+    std::getline(file, line); // Gets "# material_count"
+    tokens = split_line(line, " ");
+    material_count = std::stoul(tokens[2]);
+
+    materials.reserve(material_count);
+
+    for (size_t i = 0; i < material_count; i++) {
+
+        std::string name;
+        vec3 Ka;
+        vec3 Ks;
+        float Ni;
+        float d;
+        std::string Kd_map;
+        std::string Ns_map;
+        Kd_map = Ns_map = this_dir.string();
+        Kd_map.append("/");
+        Ns_map.append("/");
+
+        std::getline(file, line); // Skips empty line
+
+        std::getline(file, line); // newmtl name
+        tokens = split_line(line, " ");
+        name = tokens[1];
+
+        std::getline(file, line); // Ka values
+        tokens = split_line(line, " ");
+        Ka = read_vec3(tokens);
+
+        std::getline(file, line); // Ks values
+        tokens = split_line(line, " ");
+        Ks = read_vec3(tokens);
+
+        std::getline(file, line); // Ni value
+        tokens = split_line(line, " ");
+        Ni = std::stof(tokens[1]);
+
+        std::getline(file, line); // d value
+        tokens = split_line(line, " ");
+        d = std::stof(tokens[1]);
+
+        std::getline(file, line); // Skips illum line
+
+        std::getline(file, line); // Kd_map
+        tokens = split_line(line, " ");
+        Kd_map.append(tokens[1]);
+
+        std::getline(file, line); // Ns_map value
+        tokens = split_line(line, " ");
+        Ns_map.append(tokens[1]);
+
+        materials.insert({name, Material(Ka, Ks, Ni, d, Kd_map, Ns_map)});
+
+    }
+    file.close();
+
+    return materials;
+}
 
 std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) {
 
-    std::vector<std::string> tokens;
+
     std::filesystem::path dir = "./src/assets";
     dir /= model_dir_name; // dir = assets/model_dir_name
 
@@ -252,7 +345,8 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
     std::filesystem::path mtl_file = files;
     mtl_file.concat(".mtl"); // mtl_file = assets/model_dir_name/model_dir_name.mtl
 
-    //std::unordered_map<std::string, Material> materials = parse_mtl(mtl_file);
+    std::unordered_map<std::string, Material> materials = parse_mtl(mtl_file);
+
 
     std::vector<vec3> v;
     std::vector<vec3> vn;
@@ -263,6 +357,7 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
     size_t texture_count = 0;
     size_t normal_count = 0;
     size_t tri_count = 0; */
+    std::vector<std::string> tokens;
     size_t mesh_count = 0;
 
     std::string line;
@@ -410,8 +505,8 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
         std::getline(file, line); // Skips "s 1"
         // Getting material
         std::getline(file, line);
-        //tokens = split_line(line, " ");
-        //mat = materials[tokens[1]];
+        tokens = split_line(line, " ");
+        mat = materials[tokens[1]];
 
         for (size_t j = 0; j < mesh_descriptions[i].f; j++) {
             std::getline(file, line);
@@ -449,75 +544,11 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
     
 
     return meshes;
-
-    /* while (std::getline(file, line)) {
-
-    }
-
-
-    while (std::getline(file, line)) {
-
-        tokens = split_line(line, " ");
-
-        if ( tokens[0].compare("v") == 0 ) {
-            ++vertex_count;
-        }
-
-        else if ( tokens[0].compare("vn") == 0 ) {
-            ++normal_count;
-        }
-
-        else if ( tokens[0].compare("vt") == 0 ) {
-            ++texture_count;
-        }
-
-        else if ( tokens[0].compare("f") == 0 ) {
-            // Counting the 'f'if there is 4 tokens (3 coords) return 1 tri
-            // If 5 (4 coords) returns 2 and so on
-            tri_count += tokens.size() - 3;
-        }
-
-        else if ( tokens[0].compare("o") == 0 ) {
-            ++mesh_count;
-        }
-
-    }
-    file.close();
-
-    v.reserve(vertex_count);
-    vn.reserve(normal_count);
-    vt.reserve(texture_count);
-
-    //tri * 3 vertex, upper limit
-    vertices.reserve(tri_count * 3);
-
-    while (std::getline(file, line)) {
-
-        tokens = split_line(line, " ");
-
-        if ( !(tokens[0].compare("v")) ) {
-            v.push_back(read_vec3(tokens));
-        }
-
-        else if ( !(tokens[0].compare("vn")) ) {
-            vn.push_back(read_vec3(tokens));
-        }
-
-        else if ( !(tokens[0].compare("vt")) ) {
-            vt.push_back(read_vec2(tokens));
-        }
-
-        else if ( !(tokens[0].compare("f")) ) {
-            read_face(tokens, v, vn, vt, vertices);
-        }
-
-    }
-    file.close(); */
-
 }
 
-Model::Model(const std::filesystem::path& model_dir_name) {
+Model::Model(const std::filesystem::path& model_dir_name, Shader shader) {
     this->meshes = parse_obj(model_dir_name);
+    this->shader = shader;
 }
 
 Model::Model(std::vector<Mesh> /* meshes */, Shader /* shader */) {
@@ -530,7 +561,24 @@ Model::~Model() {
 
 
 
-void Model::render(mat4 /* MVP */) const {
+void Model::render(/*mat4 MVP */) const {
+
+    //shader.bind();
+
+    for (size_t i = 0; i < meshes.size(); i++) {
+
+        Material mat = meshes[i].get_material();
+
+        glBindTexture(GL_TEXTURE_2D, mat.get_Kd_map_id());
+        glBindVertexArray(meshes[i].get_id());
+        
+        glDrawElements(GL_TRIANGLES, meshes[i].get_vertex_count(), GL_UNSIGNED_INT, (void*) 0);
+
+    }
+
+    shader.unbind();
+    glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 

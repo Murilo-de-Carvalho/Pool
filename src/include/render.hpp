@@ -23,32 +23,34 @@ class Material {
 private:
 
     vec3 Ka; // Ambient lighting
-    vec3 Kd; // Diffuse lighting
     vec3 Ks; // Specular lighting
-    float Ns; // Brightness 0-100
     float Ni; // Refraction coefficient
     float d;  // Opacity
-    unsigned int texture_id;
+    unsigned int Kd_map_id;
+    unsigned int Ns_map_id;
 
-    void get_texture(const std::string& texture_path);
+    void get_maps(const std::string& Kd_map_path, const std::string& Ns_map_path);
 
 public:
 
     Material();
     Material(
         vec3 Ka,
-        vec3 Kd,
         vec3 Ks,
-        float Ns, 
         float Ni,
         float d,
-        const std::string& texture_path
+        const std::string& Kd_map_path,
+        const std::string& Ns_map_path
     );
 
     ~Material();
 
-    inline unsigned int get_texture_id() const {
-        return texture_id;
+    inline unsigned int get_Kd_map_id() const {
+        return Kd_map_id;
+    }
+
+    inline unsigned int get_Ns_map_id() const {
+        return Ns_map_id;
     }
 
 };
@@ -59,19 +61,26 @@ private:
 
     unsigned int id;
     Material material;
-    //std::vector<Vertex> vertices;
+    std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
     void setup_mesh();
 
 public:
-    std::vector<Vertex> vertices;
 
     Mesh(Material material, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     ~Mesh();
 
     inline unsigned int get_id() const {
         return id;
+    }
+
+    inline unsigned int get_vertex_count() const {
+        return vertices.size();
+    }
+
+    inline Material get_material() const {
+        return material;
     }
 
 };
@@ -106,17 +115,17 @@ private:
     vec2 read_vec2(const std::vector<std::string>& tokens) const;
     vec3 read_vec3(const std::vector<std::string>& tokens) const;
 
-    /* std::unordered_map<std::string, Material> parse_mtl(const std::string& file_path); */
+    std::unordered_map<std::string, Material> parse_mtl(const std::filesystem::path& file_path);
 
     std::vector<Mesh> parse_obj(const std::filesystem::path& model_dir_name);
 
 public:
 
-    Model(const std::filesystem::path& model_dir_name);
+    Model(const std::filesystem::path& model_dir_name, Shader shader);
     Model(std::vector<Mesh> meshes, Shader shader);
     ~Model();
 
-    void render(mat4 MVP) const;
+    void render() const;
     void set_pos(vec3 new_pos);
     void set_rotation(quat new_rotation);
     void update_rotation(quat delta_rotation);
