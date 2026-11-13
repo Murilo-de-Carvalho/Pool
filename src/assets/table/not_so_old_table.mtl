@@ -1,0 +1,84 @@
+# Blender 5.2.3 LTS MTL File: 'None'
+# www.blender.org
+# material_count 9
+
+newmtl Baize
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.100000
+d 1.000000
+illum 2
+map_Kd textures/snooker_table_Baize_BaseColor.png
+map_Ns textures/snooker_table_Baize_Roughness.png
+
+newmtl Lamp
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd textures/lamp_BaseColor.png
+map_Ns textures/lamp_Roughness.png
+
+newmtl Leg_holders
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.250000
+d 1.000000
+illum 2
+map_Kd textures/snooker_table_Leg_holders_BaseColor.png
+map_Ns textures/snooker_table_Leg_holders_Roughness.png
+
+newmtl Legs
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.250000
+d 1.000000
+illum 2
+map_Kd textures/snooker_table_Legs_BaseColor.png
+map_Ns textures/snooker_table_Legs_Roughness.png
+
+newmtl Material.001
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd textures/Material_001_BaseColor.png
+map_Ns textures/Material_001_Roughness.png
+
+newmtl Pin
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.050000
+d 1.000000
+illum 2
+map_Kd textures/snooker_table_Pin_BaseColor.png
+map_Ns textures/snooker_table_Pin_Roughness.png
+
+newmtl Pot_corner
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.200000
+d 1.000000
+illum 2
+map_Kd textures/snooker_table_Pot_corner_BaseColor.png
+map_Ns textures/snooker_table_Pot_corner_Roughness.png
+
+newmtl Pot_middle
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.200000
+d 1.010000
+illum 9
+map_Kd textures/snooker_table_Pot_middle_BaseColor.png
+map_Ns textures/snooker_table_Pot_middle_Roughness.png
+
+newmtl cushion
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.010000
+d 1.010000
+illum 9
+map_Kd textures/snooker_table_cushion_BaseColor.png
+map_Ns textures/snooker_table_cushion_Roughness.png

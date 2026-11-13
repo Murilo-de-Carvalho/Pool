@@ -123,9 +123,10 @@ public:
 
     Model(const std::filesystem::path& model_dir_name, Shader shader);
     Model(std::vector<Mesh> meshes, Shader shader);
+    Model();
     ~Model();
 
-    void render() const;
+    void render(mat4 model, mat4 view, mat4 projection) const;
     void set_pos(vec3 new_pos);
     void set_rotation(quat new_rotation);
     void update_rotation(quat delta_rotation);

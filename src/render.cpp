@@ -347,12 +347,6 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
 
     std::unordered_map<std::string, Material> materials = parse_mtl(mtl_file);
 
-
-    std::vector<vec3> v;
-    std::vector<vec3> vn;
-    std::vector<vec2> vt;
-    std::vector<Vertex> vertices;
-
     /* size_t vertex_count = 0;
     size_t texture_count = 0;
     size_t normal_count = 0;
@@ -376,6 +370,9 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
     mesh_count = std::stoul(tokens[2]);
 
     std::vector<__Mesh_Description> mesh_descriptions(mesh_count);
+    size_t global_v_count = 0;
+    size_t global_vn_count = 0;
+    size_t global_vt_count = 0;
     //mesh_descriptions.reserve(mesh_count);
     
     std::getline(file, line); // Skips "o name"
@@ -399,6 +396,7 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
             }
 
             ++mesh_descriptions[i].v;
+            ++global_v_count;
 
         }
 
@@ -412,6 +410,7 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
             }
 
             ++mesh_descriptions[i].vn;
+            ++global_vn_count;
 
         } while (std::getline(file, line));
 
@@ -425,6 +424,7 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
             }
 
             ++mesh_descriptions[i].vt;
+            ++global_vt_count;
 
         } while (std::getline(file, line));
 
@@ -472,11 +472,16 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
     std::vector<Mesh> meshes;
     meshes.reserve(mesh_count);
 
+    std::vector<vec3> v(global_v_count);
+    std::vector<vec3> vn(global_vn_count);
+    std::vector<vec2> vt(global_vt_count);
+
+    size_t v_seen = 0;
+    size_t vn_seen = 0;
+    size_t vt_seen = 0;
+
     for (size_t i = 0; i < mesh_count; i++) {
 
-        std::vector<vec3> v(mesh_descriptions[i].v);
-        std::vector<vec3> vn(mesh_descriptions[i].vn);
-        std::vector<vec2> vt(mesh_descriptions[i].vt);
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
         //vertices.reserve(mesh_descriptions[i].v);
@@ -487,19 +492,19 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
         for (size_t j = 0; j < mesh_descriptions[i].v; j++) {
             std::getline(file, line);
             tokens = split_line(line, " ");
-            v[j] = read_vec3(tokens);
+            v[v_seen++] = read_vec3(tokens);
         }
 
         for (size_t j = 0; j < mesh_descriptions[i].vn; j++) {
             std::getline(file, line);
             tokens = split_line(line, " ");
-            vn[j] = read_vec3(tokens);
+            vn[vn_seen++] = read_vec3(tokens);
         }
 
         for (size_t j = 0; j < mesh_descriptions[i].vt; j++) {
             std::getline(file, line);
             tokens = split_line(line, " ");
-            vt[j] = read_vec2(tokens);
+            vt[vt_seen++] = read_vec2(tokens);
         }
 
         std::getline(file, line); // Skips "s 1"
@@ -517,6 +522,18 @@ std::vector<Mesh> Model::parse_obj(const std::filesystem::path& model_dir_name) 
         indices.resize(vertices.size());
         std::iota(indices.begin(), indices.end(), 0);
         meshes.push_back(Mesh(mat, vertices, indices));
+
+        /* v.clear();
+        vn.clear();
+        vt.clear();
+        vertices.clear();
+        indices.clear();
+
+        v.resize(0);
+        vn.resize(0);
+        vt.resize(0);
+        vertices.resize(0);
+        indices.resize(0); */
 
         // TODO: REMOVE
         /* printf("size: %zu\n", vertices.size());
@@ -555,15 +572,28 @@ Model::Model(std::vector<Mesh> /* meshes */, Shader /* shader */) {
 
 }
 
+Model::Model() {
+
+}
+
 Model::~Model() {
 
 }
 
 
 
-void Model::render(/*mat4 MVP */) const {
+void Model::render(mat4 model, mat4 view, mat4 projection) const {
 
-    //shader.bind();
+    shader.bind();
+
+    int model_loc = glGetUniformLocation(shader.get_id(), "u_model");
+    glUniformMatrix4fv(model_loc, 1, GL_FALSE, glm::value_ptr(model));
+
+    int view_loc = glGetUniformLocation(shader.get_id(), "u_view");
+    glUniformMatrix4fv(view_loc, 1, GL_FALSE, glm::value_ptr(view));
+
+    int projection_loc = glGetUniformLocation(shader.get_id(), "u_projection");
+    glUniformMatrix4fv(projection_loc, 1, GL_FALSE, glm::value_ptr(projection));
 
     for (size_t i = 0; i < meshes.size(); i++) {
 
